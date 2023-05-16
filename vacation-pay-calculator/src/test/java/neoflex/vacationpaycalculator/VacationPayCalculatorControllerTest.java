@@ -33,7 +33,7 @@ public class VacationPayCalculatorControllerTest {
     @BeforeEach
     public void setUp() {
 
-        vacationPay = 9333.34;
+        vacationPay = 9556.32;
     }
 
 

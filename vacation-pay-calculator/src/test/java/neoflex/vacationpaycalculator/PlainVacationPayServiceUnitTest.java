@@ -17,7 +17,7 @@ private final VacationPayService service = new PlainVacationPayService();
         double salary = 40000;
         int days = 7;
 
-        double preExpectedVacationPay = salary / 30 * days;
+        double preExpectedVacationPay = salary / 29.3 * days;
 
         double scale = Math.pow(10, 2);
 

@@ -7,7 +7,7 @@ public class PlainVacationPayService implements VacationPayService {
 
     @Override
     public double calculate(double salary, int days) {
-        double preResult = salary / 30 * days;
+        double preResult = salary / 29.3 * days;
 
         double scale = Math.pow(10, 2);
 
