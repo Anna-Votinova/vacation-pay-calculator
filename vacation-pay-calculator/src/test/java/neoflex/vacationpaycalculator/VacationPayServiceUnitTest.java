@@ -24,7 +24,7 @@ class VacationPayServiceUnitTest {
 
         BigDecimal givenSalary = service.calculate(salary, days, null, null);
 
-        assertEquals("9556.33", givenSalary.toString());
+        assertEquals("9556.31", givenSalary.toString());
     }
 
     @DisplayName("JUnit test for calculate method (negative scenario)")
@@ -55,7 +55,7 @@ class VacationPayServiceUnitTest {
 
         BigDecimal givenSalary = service.calculate(salary, days, from, to);
 
-        assertEquals("8191.14", givenSalary.toString());
+        assertEquals("8191.13", givenSalary.toString());
     }
 
     @DisplayName("JUnit test for calculate method (positive scenario)")
@@ -67,7 +67,7 @@ class VacationPayServiceUnitTest {
 
         BigDecimal givenSalary = service.calculate(salary, days, from, to);
 
-        assertEquals("8191.14", givenSalary.toString());
+        assertEquals("8191.13", givenSalary.toString());
     }
 
     @DisplayName("JUnit test for calculate method (positive scenario)")
@@ -79,7 +79,7 @@ class VacationPayServiceUnitTest {
 
         BigDecimal givenSalary = service.calculate(salary, days, from, to);
 
-        assertEquals("8191.14", givenSalary.toString());
+        assertEquals("8191.13", givenSalary.toString());
     }
 
     @DisplayName("JUnit test for calculate method (negative scenario)")

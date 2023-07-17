@@ -36,8 +36,10 @@ public class ExceptionController {
     @ResponseBody
     public ValidationErrorResponse onConstraintValidationException(final ConstraintViolationException e) {
         log.error(e.getMessage(), e);
-        final List<Violation> violations = e.getConstraintViolations().stream()
-                                            .map(violation -> new Violation(violation.getPropertyPath().toString(), violation.getMessage()))
+        final List<Violation> violations = e.getConstraintViolations()
+                                            .stream()
+                                            .map(violation -> new Violation(violation.getPropertyPath().toString(),
+                                                    violation.getMessage()))
                                             .collect(Collectors.toList());
         return new ValidationErrorResponse(violations);
     }
@@ -47,7 +49,9 @@ public class ExceptionController {
     @ResponseBody
     public ValidationErrorResponse onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
-        final List<Violation> violations = e.getBindingResult().getFieldErrors().stream()
+        final List<Violation> violations = e.getBindingResult()
+                                            .getFieldErrors()
+                                            .stream()
                                             .map(error -> new Violation(error.getField(), error.getDefaultMessage()))
                                             .collect(Collectors.toList());
         return new ValidationErrorResponse(violations);
