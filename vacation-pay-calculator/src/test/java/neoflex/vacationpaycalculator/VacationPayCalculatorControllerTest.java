@@ -2,8 +2,7 @@ package neoflex.vacationpaycalculator;
 
 import jakarta.validation.ValidationException;
 import neoflex.vacationpaycalculator.controller.VacationPayCalculatorController;
-import neoflex.vacationpaycalculator.service.VacationPayServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
+import neoflex.vacationpaycalculator.service.VacationPayService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,43 +12,37 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = VacationPayCalculatorController.class)
-public class VacationPayCalculatorControllerTest {
+class VacationPayCalculatorControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    VacationPayServiceImpl service;
+    VacationPayService service;
 
-    private double vacationPay;
-
-    @BeforeEach
-    public void setUp() {
-
-        vacationPay = 9556.32;
-    }
+    private final BigDecimal vacationPay = new BigDecimal("9556.31");
 
 
     @DisplayName("MockMvc test for getVacationPay method (positive scenario)")
     @Test
     void givenCorrectData_whenGetVacationPay_thenReturnVacationPay() throws Exception {
-        when(service.calculate(anyDouble(), anyInt(), any(), any())).thenReturn(vacationPay);
+        when(service.calculate(any(), anyInt(), any(), any())).thenReturn(vacationPay);
 
         mvc.perform(get("/calculate")
-                   .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                   .param("salary", "40000")
-                   .param("days", "7")
-                   .characterEncoding(StandardCharsets.UTF_8))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .param("salary", "40000")
+                .param("days", "7")
+                .characterEncoding(StandardCharsets.UTF_8))
            .andExpect(status().isOk());
 
     }
@@ -59,10 +52,10 @@ public class VacationPayCalculatorControllerTest {
     void givenNegativeSalary_whenGetVacationPay_thenThrowException() throws Exception {
 
         mvc.perform(get("/calculate")
-                   .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                   .param("salary", "-40000")
-                   .param("days", "7")
-                   .characterEncoding(StandardCharsets.UTF_8))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .param("salary", "-40000")
+                .param("days", "7")
+                .characterEncoding(StandardCharsets.UTF_8))
            .andExpect(status().is(400));
 
     }
@@ -70,13 +63,13 @@ public class VacationPayCalculatorControllerTest {
     @DisplayName("MockMvc test for getVacationPay method (negative scenario)")
     @Test
     void givenNegativeDays_whenGetVacationPay_thenThrowException() throws Exception {
-        when(service.calculate(anyDouble(), anyInt(), any(), any())).thenThrow(ValidationException.class);
+        when(service.calculate(any(), anyInt(), any(), any())).thenThrow(ValidationException.class);
 
         mvc.perform(get("/calculate")
-                   .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                   .param("salary", "40000")
-                   .param("days", "-7")
-                   .characterEncoding(StandardCharsets.UTF_8))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .param("salary", "40000")
+                .param("days", "-7")
+                .characterEncoding(StandardCharsets.UTF_8))
            .andExpect(status().is(400));
 
     }
@@ -84,13 +77,13 @@ public class VacationPayCalculatorControllerTest {
     @DisplayName("MockMvc test for getVacationPay method (negative scenario)")
     @Test
     void givenZeroDays_whenGetVacationPay_thenThrowException() throws Exception {
-        when(service.calculate(anyDouble(), anyInt(), any(), any())).thenThrow(ValidationException.class);
+        when(service.calculate(any(), anyInt(), any(), any())).thenThrow(ValidationException.class);
 
         mvc.perform(get("/calculate")
-                   .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                   .param("salary", "40000")
-                   .param("days", "0")
-                   .characterEncoding(StandardCharsets.UTF_8))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .param("salary", "40000")
+                .param("days", "0")
+                .characterEncoding(StandardCharsets.UTF_8))
            .andExpect(status().is(400));
 
     }
@@ -100,10 +93,10 @@ public class VacationPayCalculatorControllerTest {
     void givenZeroSalary_whenGetVacationPay_thenThrowException() throws Exception {
 
         mvc.perform(get("/calculate")
-                   .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                   .param("salary", "0")
-                   .param("days", "7")
-                   .characterEncoding(StandardCharsets.UTF_8))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .param("salary", "0")
+                .param("days", "7")
+                .characterEncoding(StandardCharsets.UTF_8))
            .andExpect(status().is(400));
 
     }
@@ -113,12 +106,11 @@ public class VacationPayCalculatorControllerTest {
     void givenWrongDateFormat_whenGetVacationPay_thenThrowException() throws Exception {
 
         mvc.perform(get("/calculate")
-                   .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                   .param("salary", "40000")
-                   .param("days", "7")
-                   .param("from", "2023:01:01")
-                   .param("from", "2023:01:14")
-                   .characterEncoding(StandardCharsets.UTF_8))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .param("days", "7")
+                .param("from", "2023:01:01")
+                .param("from", "2023:01:14")
+                .characterEncoding(StandardCharsets.UTF_8))
            .andExpect(status().is(500));
 
     }

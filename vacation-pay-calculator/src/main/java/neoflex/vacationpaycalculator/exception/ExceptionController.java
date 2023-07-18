@@ -37,7 +37,8 @@ public class ExceptionController {
     public ValidationErrorResponse onConstraintValidationException(final ConstraintViolationException e) {
         log.error(e.getMessage(), e);
         final List<Violation> violations = e.getConstraintViolations().stream()
-                                            .map(violation -> new Violation(violation.getPropertyPath().toString(), violation.getMessage()))
+                                            .map(violation -> new Violation(violation.getPropertyPath().toString(),
+                                                    violation.getMessage()))
                                             .collect(Collectors.toList());
         return new ValidationErrorResponse(violations);
     }
