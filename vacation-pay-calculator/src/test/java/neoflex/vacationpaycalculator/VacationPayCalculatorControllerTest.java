@@ -38,10 +38,12 @@ class VacationPayCalculatorControllerTest {
     void givenCorrectData_whenGetVacationPay_thenReturnVacationPay() throws Exception {
         when(service.calculate(any(), anyInt(), any(), any())).thenReturn(vacationPay);
 
-        mvc.perform(get("/calculate").header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                                     .param("salary", "40000")
-                                     .param("days", "7")
-                                     .characterEncoding(StandardCharsets.UTF_8)).andExpect(status().isOk());
+        mvc.perform(get("/calculate")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .param("salary", "40000")
+                .param("days", "7")
+                .characterEncoding(StandardCharsets.UTF_8))
+           .andExpect(status().isOk());
 
     }
 
@@ -49,10 +51,12 @@ class VacationPayCalculatorControllerTest {
     @Test
     void givenNegativeSalary_whenGetVacationPay_thenThrowException() throws Exception {
 
-        mvc.perform(get("/calculate").header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                                     .param("salary", "-40000")
-                                     .param("days", "7")
-                                     .characterEncoding(StandardCharsets.UTF_8)).andExpect(status().is(400));
+        mvc.perform(get("/calculate")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .param("salary", "-40000")
+                .param("days", "7")
+                .characterEncoding(StandardCharsets.UTF_8))
+           .andExpect(status().is(400));
 
     }
 
@@ -61,10 +65,12 @@ class VacationPayCalculatorControllerTest {
     void givenNegativeDays_whenGetVacationPay_thenThrowException() throws Exception {
         when(service.calculate(any(), anyInt(), any(), any())).thenThrow(ValidationException.class);
 
-        mvc.perform(get("/calculate").header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                                     .param("salary", "40000")
-                                     .param("days", "-7")
-                                     .characterEncoding(StandardCharsets.UTF_8)).andExpect(status().is(400));
+        mvc.perform(get("/calculate")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .param("salary", "40000")
+                .param("days", "-7")
+                .characterEncoding(StandardCharsets.UTF_8))
+           .andExpect(status().is(400));
 
     }
 
@@ -73,10 +79,12 @@ class VacationPayCalculatorControllerTest {
     void givenZeroDays_whenGetVacationPay_thenThrowException() throws Exception {
         when(service.calculate(any(), anyInt(), any(), any())).thenThrow(ValidationException.class);
 
-        mvc.perform(get("/calculate").header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                                     .param("salary", "40000")
-                                     .param("days", "0")
-                                     .characterEncoding(StandardCharsets.UTF_8)).andExpect(status().is(400));
+        mvc.perform(get("/calculate")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .param("salary", "40000")
+                .param("days", "0")
+                .characterEncoding(StandardCharsets.UTF_8))
+           .andExpect(status().is(400));
 
     }
 
@@ -84,10 +92,12 @@ class VacationPayCalculatorControllerTest {
     @Test
     void givenZeroSalary_whenGetVacationPay_thenThrowException() throws Exception {
 
-        mvc.perform(get("/calculate").header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                                     .param("salary", "0")
-                                     .param("days", "7")
-                                     .characterEncoding(StandardCharsets.UTF_8)).andExpect(status().is(400));
+        mvc.perform(get("/calculate")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .param("salary", "0")
+                .param("days", "7")
+                .characterEncoding(StandardCharsets.UTF_8))
+           .andExpect(status().is(400));
 
     }
 
@@ -95,12 +105,13 @@ class VacationPayCalculatorControllerTest {
     @Test
     void givenWrongDateFormat_whenGetVacationPay_thenThrowException() throws Exception {
 
-        mvc.perform(get("/calculate").header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                                     .param("salary", "40000")
-                                     .param("days", "7")
-                                     .param("from", "2023:01:01")
-                                     .param("from", "2023:01:14")
-                                     .characterEncoding(StandardCharsets.UTF_8)).andExpect(status().is(500));
+        mvc.perform(get("/calculate")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .param("days", "7")
+                .param("from", "2023:01:01")
+                .param("from", "2023:01:14")
+                .characterEncoding(StandardCharsets.UTF_8))
+           .andExpect(status().is(500));
 
     }
 
